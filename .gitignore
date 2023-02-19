@@ -368,3 +368,7 @@ appsettings.json
 appsettings.Development.json
 appsettings.Production.json
 Properties/
+
+# VS Files
+*.csproj
+*.sln
