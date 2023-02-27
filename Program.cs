@@ -31,15 +31,20 @@ var quiz2 = new Quiz("What version of Svelte are we in right now?", new List<str
 quizzes.Add(quiz1);
 quizzes.Add(quiz2);
 
-app.MapGet("/quiz", () =>
+app.MapGet("/quizzes", () =>
 {
     var randRes = new Quiz(quizzes[rand.Next(quizzes.Count)]);
-    Console.WriteLine(randRes.ToString());
-    Console.WriteLine(randRes.GetType().Name);
     var json_quiz = JsonConvert.SerializeObject(quizzes);
     return json_quiz;
 })
-.WithName("quiz");
+.WithName("quizzes");
+
+app.MapGet("/quizzes/random", () =>
+{
+    var json_quiz = JsonConvert.SerializeObject(quizzes[rand.Next(quizzes.Count)]);
+    return json_quiz;
+})
+.WithName("random");
 
 app.Run();
 
