@@ -33,7 +33,6 @@ quizzes.Add(quiz2);
 
 app.MapGet("/quizzes", () =>
 {
-    var randRes = new Quiz(quizzes[rand.Next(quizzes.Count)]);
     var json_quiz = JsonConvert.SerializeObject(quizzes);
     return json_quiz;
 })
