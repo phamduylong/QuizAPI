@@ -25,10 +25,22 @@ app.MapGet("/quizzes", async (QuizDb db) => JsonConvert.SerializeObject(await db
 
 app.MapGet("/quizzes/{id}", async (QuizDb db, int id) => JsonConvert.SerializeObject(await db.Quizzes.FindAsync(id)));
 
-app.MapPost("/quizzes", async (QuizDb db, Quiz quiz) => {
-    db.Quizzes.Add(quiz);
+app.MapPost("/quizzes", async (QuizDb db, Quiz newQuiz) => {
+    db.Quizzes.Add(newQuiz);
     await db.SaveChangesAsync();
-    return Results.Created($"/quizzes/{quiz.Id}", quiz);
+    return Results.Created($"/quizzes/{newQuiz.Id}", newQuiz);
+});
+
+app.MapPut("/quizzes/{id}", async (QuizDb db, int id, Quiz newQuiz) => {
+    if(await db.Quizzes.FindAsync(id) is Quiz quiz)
+    {
+        quiz.Title = newQuiz.Title;
+        quiz.Answer = newQuiz.Answer;
+        await db.SaveChangesAsync();
+        return Results.Ok();
+    }
+
+    return Results.NotFound();
 });
 
 app.MapDelete("/quizzes/{id}", async (QuizDb db, int id) => {
